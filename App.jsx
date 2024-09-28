@@ -10,12 +10,11 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider, useSelector} from 'react-redux';
-import store from './src/redux/store';
 import HomeScreen from './src/screens/HomeScreen';
 import CartScreen from './src/screens/CartScreen';
 import SplashScreen from './src/screens/SplashScreen';
-
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import store from './src/redux/store';
 
 const Stack = createStackNavigator();
 

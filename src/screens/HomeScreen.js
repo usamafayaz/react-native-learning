@@ -2,6 +2,7 @@ import React from 'react';
 import {View, FlatList, StyleSheet, SafeAreaView} from 'react-native';
 import FoodItem from '../components/FoodItem';
 import foodData from '../data/foodData';
+import TestComponent from '../components/TestComponent';
 
 const HomeScreen = () => {
   return (
@@ -13,6 +14,7 @@ const HomeScreen = () => {
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
       />
+      {/* <TestComponent /> */}
     </SafeAreaView>
   );
 };
