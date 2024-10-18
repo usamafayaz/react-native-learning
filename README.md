@@ -26,7 +26,8 @@ This project showcases a cart functionality implemented in React Native using Re
     ```
 
 3. Install React Native packages and dependencies:
-    ```npm install
+    ```bash
+    npm install
     ```
 
 4. Start the App:
