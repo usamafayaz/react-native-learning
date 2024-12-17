@@ -24,7 +24,7 @@ This project showcases a cart functionality implemented in React Native using Re
 2. Navigate to the project directory:
 
    ```bash
-   cd ReactRedux
+   cd react-redux
    ```
 
 3. Install React Native packages and dependencies:

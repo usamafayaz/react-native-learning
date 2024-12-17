@@ -15,6 +15,7 @@ import CartScreen from './src/screens/CartScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import store from './src/redux/store';
+import BallAnimation from './src/screens/BallAnimation';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,13 @@ const CartIcon = ({navigation}) => {
   );
 };
 
+const PlayGame = ({navigation}) => (
+  <TouchableOpacity
+    style={{marginRight: 20}}
+    onPress={() => navigation.navigate('BallAnimation')}>
+    <Text style={{color: 'white'}}>Play Game</Text>
+  </TouchableOpacity>
+);
 // Main App Component
 const App = () => {
   return (
@@ -66,6 +74,11 @@ const App = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen
+            name="BallAnimation"
+            component={BallAnimation}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
             name="Home"
             component={HomeScreen}
             options={({navigation}) => ({
@@ -76,9 +89,10 @@ const App = () => {
           <Stack.Screen
             name="Cart"
             component={CartScreen}
-            options={{
+            options={({navigation}) => ({
               headerTitle: 'Your Cart',
-            }}
+              headerRight: () => <PlayGame navigation={navigation} />,
+            })}
           />
         </Stack.Navigator>
       </NavigationContainer>
