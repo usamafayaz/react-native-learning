@@ -16,6 +16,7 @@ import SplashScreen from './src/screens/SplashScreen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import store from './src/redux/store';
 import BallAnimation from './src/screens/BallAnimation';
+import Todo from './src/screens/Todo';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,7 @@ const App = () => {
       <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
       <NavigationContainer>
         <Stack.Navigator
+          initialRouteName="Todo"
           screenOptions={{
             headerStyle: {
               backgroundColor: '#1c1c1e',
@@ -76,6 +78,11 @@ const App = () => {
           <Stack.Screen
             name="BallAnimation"
             component={BallAnimation}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Todo"
+            component={Todo}
             options={{headerShown: false}}
           />
           <Stack.Screen
