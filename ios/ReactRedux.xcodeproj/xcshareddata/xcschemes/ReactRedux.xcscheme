@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "ReactRedux.app"
-               BlueprintName = "ReactRedux"
-               ReferencedContainer = "container:ReactRedux.xcodeproj">
+               BuildableName = "Learning.app"
+               BlueprintName = "Learning"
+               ReferencedContainer = "container:Learning.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ReactReduxTests.xctest"
-               BlueprintName = "ReactReduxTests"
-               ReferencedContainer = "container:ReactRedux.xcodeproj">
+               BuildableName = "LearningTests.xctest"
+               BlueprintName = "LearningTests"
+               ReferencedContainer = "container:Learning.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ReactRedux.app"
-            BlueprintName = "ReactRedux"
-            ReferencedContainer = "container:ReactRedux.xcodeproj">
+            BuildableName = "Learning.app"
+            BlueprintName = "Learning"
+            ReferencedContainer = "container:Learning.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ReactRedux.app"
-            BlueprintName = "ReactRedux"
-            ReferencedContainer = "container:ReactRedux.xcodeproj">
+            BuildableName = "Learning.app"
+            BlueprintName = "Learning"
+            ReferencedContainer = "container:Learning.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

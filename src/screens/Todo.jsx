@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   FlatList,
@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
+  RefreshControl,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchTodos} from '../redux/todoSlice';
@@ -13,6 +14,14 @@ import {fetchTodos} from '../redux/todoSlice';
 const Todo = () => {
   const dispatch = useDispatch();
   const {isLoading, data, error} = useSelector(state => state.todo);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Function to handle pull-to-refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await dispatch(fetchTodos());
+    setRefreshing(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +37,9 @@ const Todo = () => {
       {Array.isArray(data) && data.length > 0 && (
         <FlatList
           data={data}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           initialNumToRender={10}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => (
@@ -77,7 +89,6 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 10,
     shadowColor: '#000',
-
     elevation: 3,
   },
   todoText: {
