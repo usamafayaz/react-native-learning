@@ -20,70 +20,73 @@ import Todo from './src/screens/Todo';
 import WheelSpinner from './src/screens/WheelSpinnerAnimation';
 import AxiosExample from './src/screens/AxiosExample';
 import ReactQuery from './src/screens/ReactQueryExample';
-
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 const Stack = createStackNavigator();
 
 const App = () => {
+  const queryClient = new QueryClient();
   return (
-    <Provider store={store}>
-      <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="AxiosExample"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#1c1c1e',
-              shadowColor: 'transparent',
-            },
-            headerTintColor: '#ffffff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 20,
-            },
-            headerBackTitleVisible: false,
-          }}>
-          <Stack.Screen
-            name="Splash"
-            component={SplashScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="BallAnimation"
-            component={BallAnimation}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Todo"
-            component={Todo}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="WheelSpinner"
-            component={WheelSpinner}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="AxiosExample"
-            component={AxiosExample}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ReactQuery"
-            component={ReactQuery}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={({navigation}) => ({
-              headerTitle: 'Order Your Favourite Food',
-              headerRight: () => <CartIcon navigation={navigation} />,
-            })}
-          />
-          <Stack.Screen name="Cart" component={CartScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="ReactQuery"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#1c1c1e',
+                shadowColor: 'transparent',
+              },
+              headerTintColor: '#ffffff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 20,
+              },
+              headerBackTitleVisible: false,
+            }}>
+            <Stack.Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="BallAnimation"
+              component={BallAnimation}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Todo"
+              component={Todo}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="WheelSpinner"
+              component={WheelSpinner}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="AxiosExample"
+              component={AxiosExample}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ReactQuery"
+              component={ReactQuery}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={({navigation}) => ({
+                headerTitle: 'Order Your Favourite Food',
+                headerRight: () => <CartIcon navigation={navigation} />,
+              })}
+            />
+            <Stack.Screen name="Cart" component={CartScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </QueryClientProvider>
   );
 };
 
