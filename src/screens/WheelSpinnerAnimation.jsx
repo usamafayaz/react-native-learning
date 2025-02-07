@@ -11,7 +11,7 @@ import {
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 
-const App = () => {
+const WheelSpinner = () => {
   // Animated values for more complex animation
   const wheelRotation = useRef(new Animated.Value(0)).current;
   const wheelPosition = useRef(new Animated.Value(0)).current;
@@ -315,6 +315,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
-
-
+export default WheelSpinner;

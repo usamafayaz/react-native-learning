@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -17,47 +17,19 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import store from './src/redux/store';
 import BallAnimation from './src/screens/BallAnimation';
 import Todo from './src/screens/Todo';
+import WheelSpinner from './src/screens/WheelSpinnerAnimation';
+import AxiosExample from './src/screens/AxiosExample';
+import ReactQuery from './src/screens/ReactQueryExample';
 
 const Stack = createStackNavigator();
 
-// Cart Icon Component (For Cart Button in Header)
-const CartIcon = ({navigation}) => {
-  const cartItems = useSelector(state => state.cart.items);
-  const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const insets = useSafeAreaInsets();
-
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Cart')}
-      style={[styles.cartIconContainer, {top: insets.top + 10}]}>
-      <Image
-        source={require('./src/assets/icons/cart.png')}
-        style={styles.cartIcon}
-      />
-      {itemCount > 0 && (
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{itemCount}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
-  );
-};
-
-const PlayGame = ({navigation}) => (
-  <TouchableOpacity
-    style={{marginRight: 20}}
-    onPress={() => navigation.navigate('BallAnimation')}>
-    <Text style={{color: 'white'}}>Play Game</Text>
-  </TouchableOpacity>
-);
-// Main App Component
 const App = () => {
   return (
     <Provider store={store}>
       <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Todo"
+          initialRouteName="AxiosExample"
           screenOptions={{
             headerStyle: {
               backgroundColor: '#1c1c1e',
@@ -86,6 +58,21 @@ const App = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen
+            name="WheelSpinner"
+            component={WheelSpinner}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="AxiosExample"
+            component={AxiosExample}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ReactQuery"
+            component={ReactQuery}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
             name="Home"
             component={HomeScreen}
             options={({navigation}) => ({
@@ -93,17 +80,33 @@ const App = () => {
               headerRight: () => <CartIcon navigation={navigation} />,
             })}
           />
-          <Stack.Screen
-            name="Cart"
-            component={CartScreen}
-            options={({navigation}) => ({
-              headerTitle: 'Your Cart',
-              headerRight: () => <PlayGame navigation={navigation} />,
-            })}
-          />
+          <Stack.Screen name="Cart" component={CartScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
+  );
+};
+
+// Cart Icon Component (For Cart Button in Header)
+const CartIcon = ({navigation}) => {
+  const cartItems = useSelector(state => state.cart.items);
+  const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const insets = useSafeAreaInsets();
+
+  return (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Cart')}
+      style={[styles.cartIconContainer, {top: insets.top + 10}]}>
+      <Image
+        source={require('./src/assets/icons/cart.png')}
+        style={styles.cartIcon}
+      />
+      {itemCount > 0 && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{itemCount}</Text>
+        </View>
+      )}
+    </TouchableOpacity>
   );
 };
 
