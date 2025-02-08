@@ -21,72 +21,82 @@ import WheelSpinner from './src/screens/WheelSpinnerAnimation';
 import AxiosExample from './src/screens/AxiosExample';
 import ReactQuery from './src/screens/ReactQueryExample';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {StripeProvider} from '@stripe/stripe-react-native';
+import StripePayment from './src/screens/StripePayment';
+
 const Stack = createStackNavigator();
 
 const App = () => {
   const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="ReactQuery"
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: '#1c1c1e',
-                shadowColor: 'transparent',
-              },
-              headerTintColor: '#ffffff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                fontSize: 20,
-              },
-              headerBackTitleVisible: false,
-            }}>
-            <Stack.Screen
-              name="Splash"
-              component={SplashScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="BallAnimation"
-              component={BallAnimation}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Todo"
-              component={Todo}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="WheelSpinner"
-              component={WheelSpinner}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="AxiosExample"
-              component={AxiosExample}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="ReactQuery"
-              component={ReactQuery}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={({navigation}) => ({
-                headerTitle: 'Order Your Favourite Food',
-                headerRight: () => <CartIcon navigation={navigation} />,
-              })}
-            />
-            <Stack.Screen name="Cart" component={CartScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
-    </QueryClientProvider>
+    <StripeProvider publishableKey="yourPublishKey">
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="StripePayment"
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: '#1c1c1e',
+                  shadowColor: 'transparent',
+                },
+                headerTintColor: '#ffffff',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                },
+                headerBackTitleVisible: false,
+              }}>
+              <Stack.Screen
+                name="Splash"
+                component={SplashScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="BallAnimation"
+                component={BallAnimation}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Todo"
+                component={Todo}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="WheelSpinner"
+                component={WheelSpinner}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="AxiosExample"
+                component={AxiosExample}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="ReactQuery"
+                component={ReactQuery}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="StripePayment"
+                component={StripePayment}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={({navigation}) => ({
+                  headerTitle: 'Order Your Favourite Food',
+                  headerRight: () => <CartIcon navigation={navigation} />,
+                })}
+              />
+              <Stack.Screen name="Cart" component={CartScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Provider>
+      </QueryClientProvider>
+    </StripeProvider>
   );
 };
 
