@@ -7,22 +7,29 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
 import {Provider, useSelector} from 'react-redux';
+
+import ReactQuery from './src/screens/ReactQueryExample';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {StripeProvider} from '@stripe/stripe-react-native';
+import StripePayment from './src/screens/StripePayment';
+
+import SplashScreen from './src/screens/SplashScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CartScreen from './src/screens/CartScreen';
-import SplashScreen from './src/screens/SplashScreen';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import store from './src/redux/store';
 import BallAnimation from './src/screens/BallAnimation';
 import Todo from './src/screens/Todo';
 import WheelSpinner from './src/screens/WheelSpinnerAnimation';
 import AxiosExample from './src/screens/AxiosExample';
-import ReactQuery from './src/screens/ReactQueryExample';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {StripeProvider} from '@stripe/stripe-react-native';
-import StripePayment from './src/screens/StripePayment';
+import Login from './src/screens/auth/Login';
+import Signup from './src/screens/auth/Signup';
+import Profile from './src/screens/auth/Profile';
 
 const Stack = createStackNavigator();
 
@@ -35,7 +42,7 @@ const App = () => {
           <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="StripePayment"
+              initialRouteName="Login"
               screenOptions={{
                 headerStyle: {
                   backgroundColor: '#1c1c1e',
@@ -48,6 +55,21 @@ const App = () => {
                 },
                 headerBackTitleVisible: false,
               }}>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Signup"
+                component={Signup}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Profile"
+                component={Profile}
+                options={{headerShown: false}}
+              />
               <Stack.Screen
                 name="Splash"
                 component={SplashScreen}
