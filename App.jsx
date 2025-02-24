@@ -14,10 +14,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Provider, useSelector} from 'react-redux';
 
-import ReactQuery from './src/screens/ReactQueryExample';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {StripeProvider} from '@stripe/stripe-react-native';
-import StripePayment from './src/screens/StripePayment';
 
 import SplashScreen from './src/screens/SplashScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -30,6 +28,11 @@ import AxiosExample from './src/screens/AxiosExample';
 import Login from './src/screens/auth/Login';
 import Signup from './src/screens/auth/Signup';
 import Profile from './src/screens/auth/Profile';
+import StripePayment from './src/screens/StripePayment';
+import ReactQuery from './src/screens/ReactQueryExample';
+import DataTableComponent from './src/screens/DataTable';
+import LocalNotification from './src/screens/LocalNotification';
+import Stopwatch from './src/screens/Stopwatch';
 
 const Stack = createStackNavigator();
 
@@ -42,7 +45,7 @@ const App = () => {
           <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="Login"
+              initialRouteName="Stopwatch"
               screenOptions={{
                 headerStyle: {
                   backgroundColor: '#1c1c1e',
@@ -103,6 +106,21 @@ const App = () => {
               <Stack.Screen
                 name="StripePayment"
                 component={StripePayment}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="DataTable"
+                component={DataTableComponent}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="LocalNotification"
+                component={LocalNotification}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Stopwatch"
+                component={Stopwatch}
                 options={{headerShown: false}}
               />
               <Stack.Screen

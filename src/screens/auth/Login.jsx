@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   ToastAndroid,
   StatusBar,
@@ -68,12 +67,10 @@ const Login = ({navigation}) => {
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar backgroundColor="#0F172A" barStyle="light-content" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Welcome Back</Text>
-          <Text style={styles.subHeaderText}>
-            Sign in to continue your journey
-          </Text>
-        </View>
+        <Text style={styles.headerText}>Welcome Back</Text>
+        <Text style={styles.subHeaderText}>
+          Sign in to continue your journey
+        </Text>
 
         <View style={styles.formContainer}>
           <View style={styles.inputWrapper}>
@@ -163,6 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#94A3B8',
     textAlign: 'center',
+    marginBottom: 32,
   },
   formContainer: {
     width: '100%',
