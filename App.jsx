@@ -33,6 +33,8 @@ import ReactQuery from './src/screens/ReactQueryExample';
 import DataTableComponent from './src/screens/DataTable';
 import LocalNotification from './src/screens/LocalNotification';
 import Stopwatch from './src/screens/Stopwatch';
+import BasicMap from './src/screens/BasicMap';
+import LocationPicker from './src/screens/LocationPicker';
 
 const Stack = createStackNavigator();
 
@@ -45,7 +47,7 @@ const App = () => {
           <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="Stopwatch"
+              initialRouteName="LocationPicker"
               screenOptions={{
                 headerStyle: {
                   backgroundColor: '#1c1c1e',
@@ -121,6 +123,16 @@ const App = () => {
               <Stack.Screen
                 name="Stopwatch"
                 component={Stopwatch}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="BasicMap"
+                component={BasicMap}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="LocationPicker"
+                component={LocationPicker}
                 options={{headerShown: false}}
               />
               <Stack.Screen
