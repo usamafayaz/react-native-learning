@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   Keyboard,
+  FlatList,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 
@@ -24,6 +25,8 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
   const [mapType, setMapType] = useState('standard'); // Map view type (standard/satellite)
   const [searchQuery, setSearchQuery] = useState(''); // User's search text
   const [isSearching, setIsSearching] = useState(false); // Search in progress indicator
+  const [suggestions, setSuggestions] = useState([]); // Search suggestions
+  const [showSuggestions, setShowSuggestions] = useState(false); // Control suggestions visibility
 
   // Default map region (fallback to Islamabad if no initial coordinates)
   const defaultRegion = {
@@ -31,6 +34,86 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
     longitude: initialCoordinates?.longitude || 73.0577642,
     latitudeDelta: 0.01, // Zoom level (smaller = more zoomed in)
     longitudeDelta: 0.01,
+  };
+
+  // Fetch location suggestions as user types
+  useEffect(() => {
+    // Debounce function to avoid too many API calls
+    const timeoutId = setTimeout(() => {
+      if (searchQuery.trim().length >= 3) {
+        fetchSuggestions();
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  // Reusable function for Nominatim API requests
+  const fetchNominatimData = async (query, limit) => {
+    const encodedQuery = encodeURIComponent(query.trim());
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}&limit=${limit}`,
+      {
+        headers: {
+          'User-Agent': 'LocationPickerApp/1.0',
+        },
+      },
+    );
+    return response.json();
+  };
+
+  // Fetch location suggestions from Nominatim API
+  const fetchSuggestions = async () => {
+    try {
+      const data = await fetchNominatimData(searchQuery, 8);
+      // Format suggestions for display
+      const formattedSuggestions = data.map(item => ({
+        id: item.place_id,
+        name: item.display_name,
+        latitude: parseFloat(item.lat),
+        longitude: parseFloat(item.lon),
+      }));
+      setSuggestions(formattedSuggestions);
+      setShowSuggestions(formattedSuggestions.length > 0);
+    } catch (error) {
+      console.error('Suggestion fetch error:', error);
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  // Handle selection of a suggestion
+  const handleSuggestionSelect = suggestion => {
+    // Set search query to selected location name
+    setSearchQuery(suggestion.name.split(',')[0]);
+
+    // Hide suggestions
+    setShowSuggestions(false);
+
+    // Create location object
+    const newLocation = {
+      latitude: suggestion.latitude,
+      longitude: suggestion.longitude,
+    };
+
+    // Update marker position
+    setMarker(newLocation);
+
+    // Animate map to new location
+    mapRef.current?.animateToRegion(
+      {
+        ...newLocation,
+        latitudeDelta: 0.009,
+        longitudeDelta: 0.009,
+      },
+      1000,
+    );
+
+    // Get detailed information for this location
+    getLocationDetails(newLocation.latitude, newLocation.longitude);
   };
 
   // Search for location using OpenStreetMap Nominatim API (free)
@@ -41,17 +124,10 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
     // Close keyboard and show loading state
     Keyboard.dismiss();
     setIsSearching(true);
+    setShowSuggestions(false);
 
     try {
-      // Encode query for URL safety
-      const encodedQuery = encodeURIComponent(searchQuery.trim());
-
-      // Make API request to OpenStreetMap
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}&limit=1`,
-      );
-      const data = await response.json();
-
+      const data = await fetchNominatimData(searchQuery, 1);
       if (data && data.length > 0) {
         // Extract location data from response
         const {lat, lon} = data[0];
@@ -67,8 +143,8 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
         mapRef.current?.animateToRegion(
           {
             ...newLocation,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
+            latitudeDelta: 0.009,
+            longitudeDelta: 0.009,
           },
           1000,
         );
@@ -141,6 +217,9 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
 
   // Handle map tap event
   const handleMapPress = useCallback(event => {
+    // Hide suggestions when map is tapped
+    setShowSuggestions(false);
+
     // Extract coordinates from the tap event
     const {latitude, longitude} = event.nativeEvent.coordinate;
 
@@ -194,7 +273,30 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
   // Clear search input
   const clearSearch = () => {
     setSearchQuery('');
+    setSuggestions([]);
+    setShowSuggestions(false);
   };
+
+  // Handle text input focus
+  const handleInputFocus = () => {
+    if (searchQuery.trim().length >= 3 && suggestions.length > 0) {
+      setShowSuggestions(true);
+    }
+  };
+
+  // Render individual suggestion item
+  const renderSuggestionItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.suggestionItem}
+      onPress={() => handleSuggestionSelect(item)}>
+      <Text style={styles.suggestionText} numberOfLines={1}>
+        {item.name.split(',')[0]}
+      </Text>
+      <Text style={styles.suggestionSubText} numberOfLines={1}>
+        {item.name.split(',').slice(1).join(',').trim()}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -209,6 +311,7 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={handleSearch}
+            onFocus={handleInputFocus}
             returnKeyType="search"
           />
           {searchQuery.length > 0 && (
@@ -227,6 +330,19 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
             )}
           </TouchableOpacity>
         </View>
+
+        {/* Suggestions dropdown */}
+        {showSuggestions && (
+          <View style={styles.suggestionsContainer}>
+            <FlatList
+              data={suggestions}
+              renderItem={renderSuggestionItem}
+              keyExtractor={item => item.id.toString()}
+              style={styles.suggestionsList}
+              keyboardShouldPersistTaps="handled"
+            />
+          </View>
+        )}
 
         {/* Map component with marker */}
         <MapView
@@ -353,11 +469,10 @@ const LocationPicker = ({onLocationSelect, initialCoordinates}) => {
   );
 };
 
-// Styles for component layout and appearance
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F7FA', // Light background for the entire component
+    backgroundColor: '#F5F7FA',
   },
   mapContainer: {
     flex: 1,
@@ -384,11 +499,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingRight: 40, // Space for clear button
     fontSize: 16,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3, // Android shadow
   },
   clearButton: {
     position: 'absolute',
@@ -410,11 +520,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
   },
   searchingButton: {
     backgroundColor: '#62A1E6', // Lighter blue when searching
@@ -446,17 +551,41 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
   },
+  // Suggestions styles
+  suggestionsContainer: {
+    position: 'absolute',
+    top: 60, // Position below search bar
+    left: 10,
+    right: 66, // Leave space for map buttons
+    zIndex: 2, // Above map but below search bar
+    backgroundColor: 'white',
+    borderRadius: 8,
+    maxHeight: 200,
+  },
+  suggestionsList: {
+    borderRadius: 8,
+  },
+  suggestionItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+  },
+  suggestionText: {
+    fontSize: 16,
+    color: '#333333',
+  },
+  suggestionSubText: {
+    fontSize: 12,
+    color: '#888888',
+    marginTop: 2,
+  },
   detailsContainer: {
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: -3},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
     maxHeight: '40%', // Limit panel height
   },
   headerContainer: {
