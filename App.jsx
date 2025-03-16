@@ -36,6 +36,7 @@ import Stopwatch from './src/screens/Stopwatch';
 import BasicMap from './src/screens/BasicMap';
 import LocationPicker from './src/screens/LocationPicker';
 import UserLocationTracker from './src/screens/UserLocationTracker';
+import MapClustering from './src/screens/MapClustering';
 
 const Stack = createStackNavigator();
 
@@ -48,7 +49,7 @@ const App = () => {
           <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="UserLocationTracker"
+              initialRouteName="MapClustering"
               screenOptions={{
                 headerStyle: {
                   backgroundColor: '#1c1c1e',
@@ -139,6 +140,11 @@ const App = () => {
               <Stack.Screen
                 name="UserLocationTracker"
                 component={UserLocationTracker}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="MapClustering"
+                component={MapClustering}
                 options={{headerShown: false}}
               />
               <Stack.Screen

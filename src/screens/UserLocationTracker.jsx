@@ -210,10 +210,7 @@ const UserLocationTracker = () => {
             ref={mapRef}
             style={styles.map}
             provider={PROVIDER_GOOGLE}
-            initialRegion={location}
-            onPanDrag={() => {
-              if (trackingEnabled) setTrackingEnabled(false);
-            }}>
+            initialRegion={location}>
             {location && (
               <Marker
                 coordinate={{
