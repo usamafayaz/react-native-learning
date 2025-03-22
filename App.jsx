@@ -37,6 +37,7 @@ import BasicMap from './src/screens/BasicMap';
 import LocationPicker from './src/screens/LocationPicker';
 import UserLocationTracker from './src/screens/UserLocationTracker';
 import MapClustering from './src/screens/MapClustering';
+import GoogleSignIn from './src/screens/GoogleSignIn';
 
 const Stack = createStackNavigator();
 
@@ -49,7 +50,7 @@ const App = () => {
           <StatusBar barStyle="light-content" backgroundColor="#1c1c1e" />
           <NavigationContainer>
             <Stack.Navigator
-              initialRouteName="MapClustering"
+              initialRouteName="LocationPicker"
               screenOptions={{
                 headerStyle: {
                   backgroundColor: '#1c1c1e',
@@ -145,6 +146,11 @@ const App = () => {
               <Stack.Screen
                 name="MapClustering"
                 component={MapClustering}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="GoogleSignIn"
+                component={GoogleSignIn}
                 options={{headerShown: false}}
               />
               <Stack.Screen

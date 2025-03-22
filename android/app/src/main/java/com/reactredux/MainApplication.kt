@@ -1,4 +1,4 @@
-package com.learning
+package com.reactnativelearning
 
 import android.app.Application
 import com.facebook.react.PackageList
