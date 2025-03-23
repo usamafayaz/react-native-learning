@@ -28,8 +28,8 @@ const GoogleLoginScreen = () => {
     // Check if user is already signed in
     const checkSignInStatus = async () => {
       try {
-        const isSignedIn = await GoogleSignin.isSignedIn();
-        if (isSignedIn) {
+        const hasPreviousSignIn = await GoogleSignin.hasPreviousSignIn();
+        if (hasPreviousSignIn) {
           // Get current user info
           const currentUser = await GoogleSignin.getCurrentUser();
           setUserInfo(currentUser.user);
