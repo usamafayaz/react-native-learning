@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> <!-- add this line for maps-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>  <!-- add this line for maps-->
@@ -18,13 +19,13 @@
 
       <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="API_KEY"/>
+        android:value="AIzaSyAXe8z79E_ywVprCQ2NWXdmsEqsP1Cm4_U"/>
       <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
       <meta-data
         android:name="com.google.android.gms.auth.api.signin"
-        android:value="KEY" />
+        android:value="826903051404-fj76hm1nufcb210ee670bko745a5van0.apps.googleusercontent.com" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
