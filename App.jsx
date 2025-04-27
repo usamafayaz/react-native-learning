@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -39,10 +39,21 @@ import UserLocationTracker from './src/screens/UserLocationTracker';
 import MapClustering from './src/screens/MapClustering';
 import GoogleSignIn from './src/screens/GoogleSignIn';
 import Spotify from './src/screens/Spotify';
+import {
+  requestUserPermission,
+  foregroundNotificationListener,
+  backgroundNotificationHandler,
+} from './src/services/fcmService';
 
 const Stack = createStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    requestUserPermission();
+    foregroundNotificationListener();
+    backgroundNotificationHandler();
+  }, []);
+
   const queryClient = new QueryClient();
   return (
     <StripeProvider publishableKey="yourPublishKey">

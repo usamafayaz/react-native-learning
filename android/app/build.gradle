@@ -113,7 +113,10 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1") // add this line for maps
     // Add the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:30.5.0')
+    
     implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.8' // or latest
+
     implementation project(':react-native-vector-icons')
 
     if (hermesEnabled.toBoolean()) {
